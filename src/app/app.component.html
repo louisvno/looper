@@ -3,7 +3,8 @@
 <button (click)="stopRecording()">Stop Recording</button>
 <ul>
   <li *ngFor="let audioUrl of audioUrls">
-    <audio controls [src]="audioUrl"></audio> 
+    <app-track controls [audioUrl]="audioUrl" [togglePlay]="togglePlay"></app-track> 
   </li>
 </ul>
+<button (click)="onPlay()">PLAY</button>
 
