@@ -28,6 +28,7 @@ export class AppComponent implements OnInit{
   startRecording(){
     if(this.recordService.audioRecorder){
       this.recordService.audioRecorder.start()
+      this.togglePlay.next(true);
       console.log(this.recordService.audioRecorder.state);
     }
   }

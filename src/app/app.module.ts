@@ -8,17 +8,16 @@ import { AppComponent } from './app.component';
 import { TrackComponent } from './track/track.component';
 import { FormsModule } from '@angular/forms';
 
-
 @NgModule({
   declarations: [
     AppComponent,
-    TrackComponent
+    TrackComponent,
   ],
   imports: [
     BrowserModule,
     SliderModule,
     FormsModule,
-    ButtonModule
+    ButtonModule,
   ],
   providers: [RecordService,WindowRefService,AudioContextService],
   bootstrap: [AppComponent]

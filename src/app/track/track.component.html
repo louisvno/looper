@@ -1,8 +1,14 @@
 <div>
   <audio controls [src]="audioUrl" loop="true" #audio></audio>
 </div>
+<div #wavesurfer class="wave-container">
+
+</div>
 
 <div>
   <p-slider [(ngModel)]="panValue" [min]="-100" [max]="100" [step]="5" (onChange)="onPan()"></p-slider>
 </div>  
+<div>
+    <p-slider [(ngModel)]="delayValue" [min]="0" [max]="100" [step]="1" (onChange)="onDelay()"></p-slider>
+  </div>  
 
