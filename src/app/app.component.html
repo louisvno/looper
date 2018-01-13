@@ -1,10 +1,8 @@
 
 <button (click)="startRecording()">Start Recording</button>
 <button (click)="stopRecording()">Stop Recording</button>
-<ul>
-  <li *ngFor="let audioUrl of audioUrls">
+  <div *ngFor="let audioUrl of audioUrls">
     <app-track controls [audioUrl]="audioUrl" [togglePlay]="togglePlay"></app-track> 
-  </li>
-</ul>
+  </div>
 <button (click)="onPlay()">PLAY</button>
 

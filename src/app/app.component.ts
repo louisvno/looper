@@ -16,7 +16,7 @@ export class AppComponent implements OnInit{
 
   audioUrls: SafeResourceUrl[];
   togglePlay: Subject<any>
-
+  panValue:0;
   constructor(private recordService:RecordService){
     this.togglePlay = new Subject<boolean>();
   }

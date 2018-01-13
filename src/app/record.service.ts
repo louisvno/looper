@@ -30,7 +30,7 @@ export class RecordService {
   
           this.audioRecorder.onstop = (e) => {
             this.zone.run(() => {
-              let blob = new Blob(this.chunks, { 'type' : 'audio/ogg; codecs=opus' });
+              let blob = new Blob(this.chunks, { 'type' : 'audio/wav;' });
               this.chunks = []; //reset buffer
               let url:SafeResourceUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.windowRef.nativeWindow.URL.createObjectURL(blob));
               this.audioUrls.push(url);
