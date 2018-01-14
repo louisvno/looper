@@ -1,9 +1,11 @@
+import { AudioContextService } from './../audio-context.service';
 import  * as WaveSurfer from 'wavesurfer.js';
 import { Component, OnInit, Input, ElementRef, ViewChild} from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { AudioContextService } from '../audio-context.service';
+import { PanelModule, InputSwitchModule } from 'primeng/primeng';
+
 
 @Component({
   selector: 'app-track',
@@ -24,6 +26,7 @@ export class TrackComponent implements OnInit {
   panValue:number;
   delayValue:number
   waveSurfer: any;
+  trackEnabled:boolean;
 
   constructor(private audioCtxService: AudioContextService) { 
     this.panValue = 0;
@@ -35,23 +38,27 @@ export class TrackComponent implements OnInit {
       container: this.container.nativeElement,
       waveColor: 'violet',
       progressColor: 'purple', 
+      audioContext:this.audioCtxService.audioCtx
     })
    
-    
+    //this.source = this.audioCtxService.audioCtx.createMediaElementSource(this.audio.nativeElement);
+    this.panNode = this.waveSurfer.backend.ac.createStereoPanner();
+    this.waveSurfer.backend.setFilter(this.panNode);
+    this.delayNode = this.waveSurfer.backend.ac.createDelay();
+    this.waveSurfer.backend.setFilter(this.delayNode);
 
-    this.source = this.audioCtxService.audioCtx.createMediaElementSource(this.audio.nativeElement);
-    this.panNode = this.audioCtxService.audioCtx.createStereoPanner();
-    this.delayNode = this.audioCtxService.audioCtx.createDelay(10.0);
-    this.source.connect(this.delayNode)
-               .connect(this.panNode) 
-               .connect(this.audioCtxService.audioCtx.destination);
+    //this.source.connect(this.delayNode)
+              // .connect(this.panNode) 
+              // .connect(this.audioCtxService.audioCtx.destination);
     this.panNode.pan.value = this.panValue; 
     this.delayNode.delayTime.value = this.delayValue; 
 
     this.togglePlay.subscribe(play => {
-      if(play)this.audio.nativeElement.play();
-      else this.audio.nativeElement.stop();
+      if(play)this.waveSurfer.play();
+      if(!play) this.waveSurfer.pause();
     });
+
+    this.trackEnabled =true;
   }
   ngOnDestroy(){
     this.togglePlay.unsubscribe();

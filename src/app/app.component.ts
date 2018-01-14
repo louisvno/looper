@@ -13,7 +13,8 @@ import { Subject } from 'rxjs/Subject';
 })
 export class AppComponent implements OnInit{
   title = 'app';
-
+  isRecording = false;
+  play = false;
   audioUrls: SafeResourceUrl[];
   togglePlay: Subject<any>
   panValue:0;
@@ -25,22 +26,21 @@ export class AppComponent implements OnInit{
     this.recordService.audioUrlsChanged.subscribe(list => this.audioUrls = list);
   }
 
-  startRecording(){
-    if(this.recordService.audioRecorder){
+  toggleRecording(){
+    if(!this.isRecording){
       this.recordService.audioRecorder.start()
       this.togglePlay.next(true);
-      console.log(this.recordService.audioRecorder.state);
-    }
-  }
-
-  stopRecording(){
-    if(this.recordService.audioRecorder){
+      this.isRecording = true;
+    } else if (this.isRecording){
       this.recordService.audioRecorder.stop()
-      console.log(this.recordService.audioRecorder.state);
+      this.isRecording = false;
     }
   }
 
   onPlay(){
-    this.togglePlay.next(true);
+    if (this.play) {this.play = false}
+    else if (!this.play) {this.play = true};
+    console.log(this.play)
+    this.togglePlay.next(this.play);
   }
 }
