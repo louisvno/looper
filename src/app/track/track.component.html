@@ -12,12 +12,16 @@
   </div>
 
   <div>
-    <h4>Pan:</h4>
+    <h4>Pan: {{panValue}}</h4>
     <p-slider [(ngModel)]="panValue" [min]="-100" [max]="100" [step]="5" (onChange)="onPan()"></p-slider>
-  </div>  
+  </div>
   <div>
-      <h4>Delay:</h4>
-      <p-slider [(ngModel)]="delayValue" [min]="0" [max]="100" [step]="1" (onChange)="onDelay()"></p-slider>
+    <h4>Gain: {{gainValue}}</h4>
+    <p-slider [(ngModel)]="gainValue" [min]="0" [max]="100" [step]="5" (onChange)="onGain()"></p-slider>
+  </div>   
+  <div>
+      <h4>Delay: {{delayValue}} ms</h4>
+      <p-slider [(ngModel)]="delayValue" [min]="0" [max]="2000" [step]="10" (onChange)="onDelay()"></p-slider>
   </div>  
 </p-panel>
 

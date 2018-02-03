@@ -23,14 +23,17 @@ export class TrackComponent implements OnInit {
   distortion:any;
   source: any;
   panNode:any;
+  gainNode:any;
   panValue:number;
-  delayValue:number
+  delayValue:number;
+  gainValue:number;
   waveSurfer: any;
   trackEnabled:boolean;
 
   constructor(private audioCtxService: AudioContextService) { 
     this.panValue = 0;
     this.delayValue = 0.0;
+    this.gainValue = 100;
   }
 
   ngOnInit() {
@@ -38,20 +41,16 @@ export class TrackComponent implements OnInit {
       container: this.container.nativeElement,
       waveColor: 'violet',
       progressColor: 'purple', 
-      audioContext:this.audioCtxService.audioCtx
+      //audioContext:this.audioCtxService.audioCtx
     })
    
-    //this.source = this.audioCtxService.audioCtx.createMediaElementSource(this.audio.nativeElement);
     this.panNode = this.waveSurfer.backend.ac.createStereoPanner();
-    this.waveSurfer.backend.setFilter(this.panNode);
     this.delayNode = this.waveSurfer.backend.ac.createDelay();
-    this.waveSurfer.backend.setFilter(this.delayNode);
+    this.waveSurfer.backend.setFilters([this.panNode,this.delayNode]);
 
-    //this.source.connect(this.delayNode)
-              // .connect(this.panNode) 
-              // .connect(this.audioCtxService.audioCtx.destination);
     this.panNode.pan.value = this.panValue; 
     this.delayNode.delayTime.value = this.delayValue; 
+    this.waveSurfer.setVolume(1);
 
     this.togglePlay.subscribe(play => {
       if(play)this.waveSurfer.play();
@@ -65,21 +64,21 @@ export class TrackComponent implements OnInit {
   }
 
   onPan(){
-    this.panNode.pan.value = this.panValue / 100; 
+    this.panNode.pan.value = + this.panValue / 100; 
   }
   onDelay(){
-    this.delayNode.delayTime.value = this.delayValue / 10; 
+    this.delayNode.delayTime.value = this.delayValue / 1000; 
+  }
+  onGain(){
+    this.waveSurfer.setVolume(this.gainValue / 100);
   }
   ngAfterViewInit(){
     var xhr = new XMLHttpRequest();
-    console.log(this.audio.nativeElement.src)
     xhr.open('GET', this.audio.nativeElement.src, true);
     xhr.responseType = 'blob';
     xhr.onload = (e) => {
     if (xhr.status == 200) {
       var myBlob = xhr.response;
-      console.log("yooo")
-      console.log(xhr.response)
       this.waveSurfer.loadBlob(myBlob)
       // myBlob is now the blob that the object URL pointed to.
     }
