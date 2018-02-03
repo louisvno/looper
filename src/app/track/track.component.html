@@ -2,7 +2,7 @@
   <p-header>
     <p-inputSwitch [(ngModel)]="trackEnabled"></p-inputSwitch>
     <button pButton type="button" icon="fa-play" class="ui-button-success"></button>
-    <button pButton type="button" icon="fa-trash" class="ui-button-secondary"></button>
+    <button pButton type="button" icon="fa-trash" class="ui-button-secondary" (click)="onDelete()"></button>
   </p-header>
   <div>
     <audio [src]="audioUrl" loop="true" #audio></audio>

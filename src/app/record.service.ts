@@ -3,8 +3,7 @@ import { WindowRefService } from './window-ref.service';
 import { Injectable, HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 declare var MediaRecorder: any;
 
 @Injectable()
@@ -37,8 +36,15 @@ export class RecordService {
               this.audioUrlsChanged.next(this.audioUrls.slice());   
             })     
           }
-      });     
+      });  
+      
+      
   }
-  
+  removeUrl(url: SafeUrl){
+    console.log("hi")
+      let index = this.audioUrls.indexOf(url);
+      this.audioUrls.splice(index,1);
+      this.audioUrlsChanged.next(this.audioUrls); 
+  }
 
 }

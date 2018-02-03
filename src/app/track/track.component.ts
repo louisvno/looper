@@ -1,10 +1,12 @@
 import { AudioContextService } from './../audio-context.service';
 import  * as WaveSurfer from 'wavesurfer.js';
 import { Component, OnInit, Input, ElementRef, ViewChild} from '@angular/core';
-import { SafeUrl } from '@angular/platform-browser';
+import { SafeUrl, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { PanelModule, InputSwitchModule } from 'primeng/primeng';
+import { RecordService } from '../record.service';
+import { Subscription } from 'rxjs/Subscription';
 
 
 @Component({
@@ -16,7 +18,7 @@ import { PanelModule, InputSwitchModule } from 'primeng/primeng';
 //Pan right left
 export class TrackComponent implements OnInit {
   delayNode: any;
-  @Input() audioUrl: SafeUrl;
+  @Input() audioUrl: SafeResourceUrl;
   @Input() togglePlay: Subject<boolean>;
   @ViewChild('audio') audio: any;
   @ViewChild('wavesurfer') container:any;
@@ -29,8 +31,9 @@ export class TrackComponent implements OnInit {
   gainValue:number;
   waveSurfer: any;
   trackEnabled:boolean;
+  playSubscription:Subscription;
 
-  constructor(private audioCtxService: AudioContextService) { 
+  constructor(private recordService: RecordService) { 
     this.panValue = 0;
     this.delayValue = 0.0;
     this.gainValue = 100;
@@ -52,7 +55,7 @@ export class TrackComponent implements OnInit {
     this.delayNode.delayTime.value = this.delayValue; 
     this.waveSurfer.setVolume(1);
 
-    this.togglePlay.subscribe(play => {
+    this.playSubscription = this.togglePlay.subscribe(play => {
       if(play)this.waveSurfer.play();
       if(!play) this.waveSurfer.pause();
     });
@@ -60,7 +63,7 @@ export class TrackComponent implements OnInit {
     this.trackEnabled =true;
   }
   ngOnDestroy(){
-    this.togglePlay.unsubscribe();
+    this.playSubscription.unsubscribe();
   }
 
   onPan(){
@@ -71,6 +74,9 @@ export class TrackComponent implements OnInit {
   }
   onGain(){
     this.waveSurfer.setVolume(this.gainValue / 100);
+  }
+  onDelete(){
+    this.recordService.removeUrl(this.audioUrl);
   }
   ngAfterViewInit(){
     var xhr = new XMLHttpRequest();
