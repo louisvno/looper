@@ -16,20 +16,22 @@ export class AppComponent implements OnInit{
   isRecording = false;
   play = false;
   audioUrls: SafeResourceUrl[];
-  togglePlay: Subject<any>
+  togglePlay: Subject<any>;
+  toggleRecording: Subject<any>;
   panValue:0;
   constructor(private recordService:RecordService){
     this.togglePlay = new Subject<boolean>();
+    this.toggleRecording = new Subject<boolean>();
   }
 
   ngOnInit(){
     this.recordService.audioUrlsChanged.subscribe(list => this.audioUrls = list);
   }
 
-  toggleRecording(){
+  onToggleRecording(){
     if(!this.isRecording){
       this.recordService.audioRecorder.start()
-      this.togglePlay.next(true);
+      this.toggleRecording.next(true);
       this.isRecording = true;
     } else if (this.isRecording){
       this.recordService.audioRecorder.stop()

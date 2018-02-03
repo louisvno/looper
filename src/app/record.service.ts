@@ -41,10 +41,9 @@ export class RecordService {
       
   }
   removeUrl(url: SafeUrl){
-    console.log("hi")
-      let index = this.audioUrls.indexOf(url);
-      this.audioUrls.splice(index,1);
-      this.audioUrlsChanged.next(this.audioUrls); 
+    let index = this.audioUrls.indexOf(url);
+    this.audioUrls.splice(index,1);
+    this.audioUrlsChanged.next(this.audioUrls); 
   }
 
 }

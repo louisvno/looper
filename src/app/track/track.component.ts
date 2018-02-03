@@ -20,6 +20,7 @@ export class TrackComponent implements OnInit {
   delayNode: any;
   @Input() audioUrl: SafeResourceUrl;
   @Input() togglePlay: Subject<boolean>;
+  @Input() toggleRecording: Subject<boolean>;
   @ViewChild('audio') audio: any;
   @ViewChild('wavesurfer') container:any;
   distortion:any;
@@ -32,6 +33,7 @@ export class TrackComponent implements OnInit {
   waveSurfer: any;
   trackEnabled:boolean;
   playSubscription:Subscription;
+  recordingSubscription:Subscription;
 
   constructor(private recordService: RecordService) { 
     this.panValue = 0;
@@ -55,15 +57,29 @@ export class TrackComponent implements OnInit {
     this.delayNode.delayTime.value = this.delayValue; 
     this.waveSurfer.setVolume(1);
 
+    this.initSubscriptions();
+    this.trackEnabled =true;
+  }
+
+  initSubscriptions(){
     this.playSubscription = this.togglePlay.subscribe(play => {
       if(play)this.waveSurfer.play();
       if(!play) this.waveSurfer.pause();
     });
 
-    this.trackEnabled =true;
+    this.recordingSubscription = this.toggleRecording.subscribe(record =>{
+      if(record){
+        this.waveSurfer.stop();
+        this.waveSurfer.play();
+      } else{
+        this.waveSurfer.stop();
+      }
+    })
   }
+
   ngOnDestroy(){
     this.playSubscription.unsubscribe();
+    this.recordingSubscription.unsubscribe();
   }
 
   onPan(){
@@ -78,6 +94,19 @@ export class TrackComponent implements OnInit {
   onDelete(){
     this.recordService.removeUrl(this.audioUrl);
   }
+  onPlayPause(){
+    this.waveSurfer.playPause();
+  }
+  onSwitchOnOff(){
+    if(this.trackEnabled){
+      this.initSubscriptions();
+    } else {
+      this.waveSurfer.stop();
+      this.playSubscription.unsubscribe();
+      this.recordingSubscription.unsubscribe();
+    }
+  }
+
   ngAfterViewInit(){
     var xhr = new XMLHttpRequest();
     xhr.open('GET', this.audio.nativeElement.src, true);

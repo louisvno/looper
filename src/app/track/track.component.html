@@ -1,7 +1,7 @@
 <p-panel>
   <p-header>
-    <p-inputSwitch [(ngModel)]="trackEnabled"></p-inputSwitch>
-    <button pButton type="button" icon="fa-play" class="ui-button-success"></button>
+    <p-inputSwitch [(ngModel)]="trackEnabled" (onChange)="onSwitchOnOff()"></p-inputSwitch>
+    <button pButton type="button" icon="fa-play" [disabled]="!trackEnabled" class="ui-button-success" (click)="onPlayPause()"></button>
     <button pButton type="button" icon="fa-trash" class="ui-button-secondary" (click)="onDelete()"></button>
   </p-header>
   <div>
