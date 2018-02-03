@@ -1,27 +1,28 @@
-<p-panel>
-  <p-header>
-    <p-inputSwitch [(ngModel)]="trackEnabled" (onChange)="onSwitchOnOff()"></p-inputSwitch>
-    <button pButton type="button" icon="fa-play" [disabled]="!trackEnabled" class="ui-button-success" (click)="onPlayPause()"></button>
-    <button pButton type="button" icon="fa-trash" class="ui-button-secondary" (click)="onDelete()"></button>
-  </p-header>
-  <div>
-    <audio [src]="audioUrl" loop="true" #audio></audio>
-  </div>
-  <div #wavesurfer class="wave-container">
+<div class="track-container">
+  <p-panel [toggleable]="true" [collapsed]="!trackEnabled">
+    <p-header>
+      <p-inputSwitch [(ngModel)]="trackEnabled" (onChange)="onSwitchOnOff()"></p-inputSwitch>
+      <button pButton type="button" icon="fa-play" [disabled]="!trackEnabled" class="ui-button-success" (click)="onPlayPause()"></button>
+      <button pButton type="button" icon="fa-trash" class="ui-button-secondary" (click)="onDelete()"></button>
+    </p-header>
+    <div>
+      <audio [src]="audioUrl" loop="true" #audio></audio>
+    </div>
+    <div #wavesurfer class="wave-container">
 
-  </div>
+    </div>
 
-  <div>
-    <h4>Pan: {{panValue}}</h4>
-    <p-slider [(ngModel)]="panValue" [min]="-100" [max]="100" [step]="5" (onChange)="onPan()"></p-slider>
-  </div>
-  <div>
-    <h4>Gain: {{gainValue}}</h4>
-    <p-slider [(ngModel)]="gainValue" [min]="0" [max]="100" [step]="5" (onChange)="onGain()"></p-slider>
-  </div>   
-  <div>
-      <h4>Delay: {{delayValue}} ms</h4>
-      <p-slider [(ngModel)]="delayValue" [min]="0" [max]="2000" [step]="10" (onChange)="onDelay()"></p-slider>
-  </div>  
-</p-panel>
-
+    <div>
+      <h4>Pan: {{panValue}}</h4>
+      <p-slider [(ngModel)]="panValue" [min]="-100" [max]="100" [step]="5" (onChange)="onPan()"></p-slider>
+    </div>
+    <div>
+      <h4>Gain: {{gainValue}}</h4>
+      <p-slider [(ngModel)]="gainValue" [min]="0" [max]="100" [step]="5" (onChange)="onGain()"></p-slider>
+    </div>   
+    <div>
+        <h4>Delay: {{delayValue}} ms</h4>
+        <p-slider [(ngModel)]="delayValue" [min]="0" [max]="2000" [step]="10" (onChange)="onDelay()"></p-slider>
+    </div>  
+  </p-panel>
+</div>

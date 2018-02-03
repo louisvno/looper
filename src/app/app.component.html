@@ -1,7 +1,13 @@
-<button pButton (click)="onPlay()" label="Play" [disabled]="isRecording"></button>
-<button pButton (click)="onToggleRecording()" label="Start Recording"></button>
-  <div *ngFor="let audioUrl of audioUrls">
+<div class="navbar">
+  <span>My Application</span>
+  <button pButton (click)="onPlay()" label="Play all" [disabled]="isRecording"></button>
+  <button pButton (click)="onToggleRecording()" label="Start Recording"></button>
+</div>
+
+<div class="main ui-g">
+  <div *ngFor="let audioUrl of audioUrls" class="ui-g-6">
     <app-track controls [audioUrl]="audioUrl" [togglePlay]="togglePlay" [toggleRecording]="toggleRecording"></app-track> 
   </div>
+</div>
 
 
