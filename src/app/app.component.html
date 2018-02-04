@@ -1,7 +1,8 @@
-<div class="navbar">
-  <span>My Application</span>
-  <button pButton (click)="onPlay()" label="Play all" [disabled]="isRecording"></button>
-  <button pButton (click)="onToggleRecording()" label="Start Recording"></button>
+<div class="navbar" >
+  <span class="button-wrapper">
+    <button pButton class="ui-button-success" (click)="onPlay()" label="Play all" [disabled]="isRecording"></button>
+    <button pButton class="ui-button-danger" (click)="onToggleRecording()" label="Start Recording"></button>
+  </span>
 </div>
 
 <div class="main ui-g">

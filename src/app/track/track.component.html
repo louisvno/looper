@@ -1,9 +1,9 @@
 <div class="track-container">
-  <p-panel [toggleable]="true" [collapsed]="!trackEnabled">
-    <p-header>
-      <p-inputSwitch [(ngModel)]="trackEnabled" (onChange)="onSwitchOnOff()"></p-inputSwitch>
+  <p-panel styleClass="track-panel" [toggleable]="true" [collapsed]="!trackEnabled">
+    <p-header >
+        <p-inputSwitch [style]="{'top':'4px'}" [(ngModel)]="trackEnabled" (onChange)="onSwitchOnOff()"></p-inputSwitch>
       <button pButton type="button" icon="fa-play" [disabled]="!trackEnabled" class="ui-button-success" (click)="onPlayPause()"></button>
-      <button pButton type="button" icon="fa-trash" class="ui-button-secondary" (click)="onDelete()"></button>
+      <button pButton type="button" icon="fa-trash"  class="ui-button-secondary" (click)="onDelete()"></button>
     </p-header>
     <div>
       <audio [src]="audioUrl" loop="true" #audio></audio>

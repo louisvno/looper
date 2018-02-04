@@ -7,6 +7,7 @@
     z-index: 999;
     width: 100%; /* Full width */
     height: 80px;
+    text-align: center;
 }
 
 /* Links inside the navbar */
@@ -28,5 +29,10 @@
 /* Main content */
 .main {
     margin-top: 80px; /* Add a top margin to avoid content overlay */
-    
+
 } 
+
+.button-wrapper{
+    padding-top: 25px;
+    display:inline-block;
+}

@@ -2,3 +2,9 @@
 body,html {width:100%;
 margin:0px;
 padding:0px}
+body{
+    background-color: rgb(238, 238, 238);
+}
+.track-panel .ui-panel-titlebar.ui-widget-header {
+    background: rgb(85, 85, 85);
+}
