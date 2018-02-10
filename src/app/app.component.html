@@ -1,7 +1,7 @@
 <div class="navbar" >
   <span class="button-wrapper">
     <button pButton class="ui-button-success" (click)="onPlay()" label="Play all" [disabled]="isRecording"></button>
-    <button pButton class="ui-button-danger" (click)="onToggleRecording()" label="Start Recording"></button>
+    <button pButton class="ui-button-danger"  [ngClass]="flashing" (click)="onToggleRecording()" [label]="recLabel"></button>
   </span>
 </div>
 

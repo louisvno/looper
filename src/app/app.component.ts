@@ -19,6 +19,8 @@ export class AppComponent implements OnInit{
   togglePlay: Subject<any>;
   toggleRecording: Subject<any>;
   panValue:0;
+  recLabel:string;
+  flashing: string;
   constructor(private recordService:RecordService){
     this.togglePlay = new Subject<boolean>();
     this.toggleRecording = new Subject<boolean>();
@@ -26,6 +28,7 @@ export class AppComponent implements OnInit{
 
   ngOnInit(){
     this.recordService.audioUrlsChanged.subscribe(list => this.audioUrls = list);
+    this.recLabel = "Start Recording"
   }
 
   onToggleRecording(){
@@ -33,9 +36,13 @@ export class AppComponent implements OnInit{
       this.recordService.audioRecorder.start()
       this.toggleRecording.next(true);
       this.isRecording = true;
+      this.recLabel = "Stop Recording";
+      this.flashing = "flashing"
     } else if (this.isRecording){
       this.recordService.audioRecorder.stop()
       this.isRecording = false;
+      this.recLabel = "Start Recording"
+      this.flashing = "";
     }
   }
 
