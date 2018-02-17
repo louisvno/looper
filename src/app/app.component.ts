@@ -29,6 +29,8 @@ export class AppComponent implements OnInit{
 
   ngOnInit(){
     this.recordService.audioUrlsChanged.subscribe(list => this.audioUrls = list);
+    //load default sample track
+    this.recordService.addUrl("/assets/130_indie_florian_chaillou.wav");
     this.recLabel = "Start Recording"
   }
 

@@ -2,15 +2,13 @@ import { SelectItem } from 'primeng/components/common/selectitem';
 import * as RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import { AudioContextService } from './../audio-context.service';
 import  * as WaveSurfer from 'wavesurfer.js';
-import { Component, OnInit, Input, ElementRef, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { SafeUrl, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { PanelModule, InputSwitchModule } from 'primeng/primeng';
 import { RecordService } from '../record.service';
 import { Subscription } from 'rxjs/Subscription';
-
-
 
 @Component({
   selector: 'app-track',
@@ -43,8 +41,9 @@ export class TrackComponent implements OnInit {
   time=4;
   bars:SelectItem[];
   barsSelected:number;
+  isReady:boolean;
 
-  constructor(private recordService: RecordService) { 
+  constructor(private recordService: RecordService,private zone: NgZone) { 
     this.panValue = 0;
     this.delayValue = 0.0;
     this.gainValue = 100;
@@ -77,12 +76,12 @@ export class TrackComponent implements OnInit {
     this.waveSurfer.setVolume(1);
 
     this.initSubscriptions();
-    this.trackEnabled =true;
-    this.waveSurfer.on('ready',() =>{ 
-      
-    })
-    this.waveSurfer.on('region-updated',(region: any)=>{
-      console.log(region.end - region.start)
+
+    this.waveSurfer.on('ready',() =>{
+      this.zone.run(()=>{
+        this.trackEnabled =true;
+        this.isReady=true;}
+      )
     })
   }
   
@@ -118,6 +117,7 @@ export class TrackComponent implements OnInit {
   ngOnDestroy(){
     this.playSubscription.unsubscribe();
     this.recordingSubscription.unsubscribe();
+    this.stopAllSub.unsubscribe();
   }
 
   onPan(){
@@ -130,6 +130,7 @@ export class TrackComponent implements OnInit {
     this.waveSurfer.setVolume(this.gainValue / 100);
   }
   onDelete(){
+    this.waveSurfer.stop();
     this.recordService.removeUrl(this.audioUrl);
   }
   onPlayPause(){

@@ -15,11 +15,13 @@ export class RecordService {
   audioUrlsChanged= new Subject<SafeResourceUrl[]>();
   
   constructor(private windowRef:WindowRefService, private domSanitizer: DomSanitizer, private zone: NgZone) { 
+    
     this.audioRecorder = this.windowRef.nativeWindow.navigator.mediaDevices.getUserMedia (
       // constraints - only audio needed for this app
       {
          audio: true
       }).then(
+        
         stream => {
           this.audioRecorder = new MediaRecorder(stream);
         
@@ -40,10 +42,16 @@ export class RecordService {
       
       
   }
+
   removeUrl(url: SafeUrl){
     let index = this.audioUrls.indexOf(url);
     this.audioUrls.splice(index,1);
     this.audioUrlsChanged.next(this.audioUrls); 
+  }
+
+  addUrl(url:string){
+    this.audioUrls.push(url);
+    this.audioUrlsChanged.next(this.audioUrls);
   }
 
 }
