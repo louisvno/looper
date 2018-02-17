@@ -18,6 +18,7 @@ export class AppComponent implements OnInit{
   audioUrls: SafeResourceUrl[];
   togglePlay: Subject<any>;
   toggleRecording: Subject<any>;
+  toggleStopAll= new Subject<any>();
   panValue:0;
   recLabel:string;
   flashing: string;
@@ -49,7 +50,9 @@ export class AppComponent implements OnInit{
   onPlay(){
     if (this.play) {this.play = false}
     else if (!this.play) {this.play = true};
-    console.log(this.play)
     this.togglePlay.next(this.play);
+  }
+  onStopAll(){
+    this.toggleStopAll.next();
   }
 }

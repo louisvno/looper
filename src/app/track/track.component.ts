@@ -1,3 +1,5 @@
+import { SelectItem } from 'primeng/components/common/selectitem';
+import * as RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import { AudioContextService } from './../audio-context.service';
 import  * as WaveSurfer from 'wavesurfer.js';
 import { Component, OnInit, Input, ElementRef, ViewChild} from '@angular/core';
@@ -9,18 +11,20 @@ import { RecordService } from '../record.service';
 import { Subscription } from 'rxjs/Subscription';
 
 
+
 @Component({
   selector: 'app-track',
   templateUrl: './track.component.html',
   styleUrls: ['./track.component.css']
 })
-//TODO optional loop optional reverb and other effects
-//Pan right left
+
 export class TrackComponent implements OnInit {
   delayNode: any;
   @Input() audioUrl: SafeResourceUrl;
   @Input() togglePlay: Subject<boolean>;
   @Input() toggleRecording: Subject<boolean>;
+  @Input() stopAll:Subject<any>;
+  @Input() trackName:string;
   @ViewChild('audio') audio: any;
   @ViewChild('wavesurfer') container:any;
   distortion:any;
@@ -34,19 +38,34 @@ export class TrackComponent implements OnInit {
   trackEnabled:boolean;
   playSubscription:Subscription;
   recordingSubscription:Subscription;
+  stopAllSub:Subscription;
+  bpm=130;
+  time=4;
+  bars:SelectItem[];
+  barsSelected:number;
 
   constructor(private recordService: RecordService) { 
     this.panValue = 0;
     this.delayValue = 0.0;
     this.gainValue = 100;
+    this.bars = [
+      {label:'0',value:0},
+      {label:'1/4',value:0.25},
+      {label:'1/2',value:0.5},
+      {label:'1',value:1},
+      {label:'2',value:2},
+      {label:'4',value:4},
+      {label:'8',value:8},
+      {label:'16',value:16}
+    ]
   }
 
   ngOnInit() {
     this.waveSurfer = WaveSurfer.create({
       container: this.container.nativeElement,
       waveColor: 'violet',
-      progressColor: 'purple', 
-      //audioContext:this.audioCtxService.audioCtx
+      progressColor: 'purple',
+      plugins:[RegionsPlugin.create({})] 
     })
    
     this.panNode = this.waveSurfer.backend.ac.createStereoPanner();
@@ -59,6 +78,22 @@ export class TrackComponent implements OnInit {
 
     this.initSubscriptions();
     this.trackEnabled =true;
+    this.waveSurfer.on('ready',() =>{ 
+      
+    })
+    this.waveSurfer.on('region-updated',(region: any)=>{
+      console.log(region.end - region.start)
+    })
+  }
+  
+  onLoopLengthSelect(){
+    this.waveSurfer.clearRegions();
+    this.waveSurfer.addRegion({
+      start: 0, // time in seconds
+      end: (this.barsSelected*this.time)/(this.bpm/60), // time in seconds
+      loop:true,
+      color: 'hsla(100, 100%, 30%, 0.1)'
+    })
   }
 
   initSubscriptions(){
@@ -74,6 +109,9 @@ export class TrackComponent implements OnInit {
       } else{
         this.waveSurfer.stop();
       }
+    })
+    this.stopAllSub = this.stopAll.subscribe(stop => {
+      this.waveSurfer.stop();
     })
   }
 

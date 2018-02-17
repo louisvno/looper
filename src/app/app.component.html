@@ -1,13 +1,17 @@
 <div class="navbar" >
   <span class="button-wrapper">
     <button pButton class="ui-button-success" (click)="onPlay()" label="Play all" [disabled]="isRecording"></button>
+    <button pButton class="ui-button-success" (click)="onStopAll()" label="Stop all" [disabled]="isRecording"></button>
     <button pButton class="ui-button-danger"  [ngClass]="flashing" (click)="onToggleRecording()" [label]="recLabel"></button>
   </span>
 </div>
 
 <div class="main ui-g">
+  <div class="ui-md-6 ui-sm-12"> 
+  <app-track controls [audioUrl]="'/assets/130_indie_florian_chaillou.wav'" [togglePlay]="togglePlay" [toggleRecording]="toggleRecording" [stopAll]="toggleStopAll"></app-track> 
+</div>
   <div *ngFor="let audioUrl of audioUrls" class="ui-md-6 ui-sm-12">
-    <app-track controls [audioUrl]="audioUrl" [togglePlay]="togglePlay" [toggleRecording]="toggleRecording"></app-track> 
+    <app-track controls [audioUrl]="audioUrl" [togglePlay]="togglePlay" [toggleRecording]="toggleRecording" [stopAll]="toggleStopAll"></app-track> 
   </div>
 </div>
 
